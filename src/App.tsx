@@ -1,72 +1,67 @@
 import { Loader } from "./components/Loader";
-import { CursorSpotlight } from "./components/CursorSpotlight";
-import { ScrollProgress } from "./components/ScrollProgress";
-import { AmbientCalls } from "./components/AmbientCalls";
-import { CallerSandbox } from "./components/CallerSandbox";
 import { Nav } from "./components/Nav";
-import { Hero } from "./components/Hero";
-import { LiveCounter } from "./components/LiveCounter";
-import { PrivacyWedge } from "./components/PrivacyWedge";
-import { CallStudio } from "./components/CallStudio";
-import { Features } from "./components/Features";
-import { PinnedPhone } from "./components/PinnedPhone";
-import { LanguagePlayground } from "./components/LanguagePlayground";
-import { LiveFeed } from "./components/LiveFeed";
-import { Metrics } from "./components/Metrics";
-import { Comparison } from "./components/Comparison";
-import { RulesBuilder } from "./components/RulesBuilder";
-import { WhyEqual } from "./components/WhyEqual";
-import { Testimonials } from "./components/Testimonials";
-import { Pricing } from "./components/Pricing";
-import { FAQ } from "./components/FAQ";
-import { Waitlist } from "./components/Waitlist";
+
+import { Stage } from "./components/Stage";
+import { Category } from "./components/Category";
+import { Aspire } from "./components/Aspire";
+import { Proof } from "./components/Proof";
+import { Greeting } from "./components/Greeting";
+import { Voices } from "./components/Voices";
+import { Creed } from "./components/Creed";
+import { Invitation } from "./components/Invitation";
 import { Footer } from "./components/Footer";
 
+/*
+  One idea, executed once.
+
+  A phone pins to the screen and never leaves. Your scroll moves the story
+  across it, and the story is about a person, not a product:
+
+    Your phone belongs to strangers. It was never meant to. Once, only the
+    powerful had someone to answer for them. Now something answers in your
+    name, it reports only to you, and when your mother calls, your phone rings.
+
+  Then the page names the category by what it refuses to be, hands the reader
+  the privilege in the present tense, proves it with one number, lets them hear
+  the assistant speak, shows them who else is inside, states its terms, and
+  opens the door.
+
+  There is nothing here to operate. No demo to drive, no chips to click, no
+  toasts. A visitor should finish this page wanting in, not understanding a
+  feature list. If a thing on this page can be *used*, it does not belong.
+
+  Grounds alternate deliberately: the Stage resolves to canvas, Category holds
+  it, the dark chapter (Aspire -> Proof) is the aspiration, Greeting warms back
+  up on sand, and Creed goes dark one last time so the door opens into light.
+*/
 export default function App() {
   return (
     <div className="grain relative min-h-[100dvh]">
       <Loader />
-      <CursorSpotlight />
-      <ScrollProgress />
-      {/* the page answers the phone while you read it */}
-      <AmbientCalls />
       <Nav />
+
       <main className="relative z-10">
-        {/* split hero */}
-        <Hero />
-        {/* thin band */}
-        <LiveCounter />
-        {/* tinted chapter */}
-        <PrivacyWedge />
-        {/* tabbed scenario player: watch it */}
-        <CallStudio />
-        {/* the input becomes the demo: now try it */}
-        <CallerSandbox />
-        {/* bento */}
-        <Features />
-        {/* sticky phone */}
-        <PinnedPhone />
-        {/* playground */}
-        <LanguagePlayground />
-        {/* centered stream */}
-        <LiveFeed />
-        {/* hairline metric grid */}
-        <Metrics />
-        {/* bar chart + three columns */}
-        <Comparison />
-        {/* playground */}
-        <RulesBuilder />
-        {/* sticky index */}
-        <WhyEqual />
-        {/* card grid, tinted chapter */}
-        <Testimonials />
-        {/* split */}
-        <Pricing />
-        {/* accordion */}
-        <FAQ />
-        {/* centered close */}
-        <Waitlist />
+        {/* the story. six beats, one object. nothing to operate. */}
+        <Stage />
+
+        {/* what it is, said by what it is not */}
+        <Category />
+
+        {/* the dark chapter: why you want in, and the number that proves it */}
+        <Aspire />
+        <Proof />
+
+        {/* the assistant, in its own voice */}
+        <Greeting />
+
+        {/* the people you would be joining */}
+        <Voices />
+
+        {/* the terms, then the door */}
+        <Creed />
+        <Invitation />
       </main>
+
       <Footer />
     </div>
   );

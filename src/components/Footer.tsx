@@ -1,60 +1,32 @@
 import { Logo } from "./Logo";
 
 /*
-  Indian users are trained to scan a footer for the legal entity and the
-  regulator. Zerodha prints its SEBI numbers; Jupiter names RBI and DICGC in
-  plain sentences. So we name the entity, the city, and the data law.
+  Everything rational lives down here, out of the story's way: the entity, the
+  law, the links. Indian buyers scan a footer for exactly this.
 */
-
-const GROUPS = [
-  { title: "Product", links: ["How it works", "Languages", "Pricing", "Security"] },
-  { title: "Company", links: ["About Equal", "Press", "Careers", "Contact"] },
-  { title: "Legal", links: ["Privacy policy", "Terms", "Grievance redressal", "Withdraw consent"] },
-];
-
 export function Footer() {
   return (
-    <footer className="border-t border-ink/10 bg-paper/60">
-      <div className="mx-auto max-w-6xl px-5 py-16">
-        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          <div>
-            <div className="flex items-center text-green">
-              <Logo className="h-[19px] w-auto" />
-            </div>
-            <p className="mt-4 max-w-[32ch] text-[14px] leading-relaxed text-ink/45">
-              An AI call assistant for India's busiest. It answers, so you do not
-              have to.
-            </p>
-            <p className="mt-6 text-[12.5px] leading-relaxed text-ink/35">
-              A consumer product by Equal Identity Private Limited, Hyderabad.
-            </p>
-          </div>
-
-          {GROUPS.map((g) => (
-            <div key={g.title}>
-              <h4 className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink/35">
-                {g.title}
-              </h4>
-              <ul className="mt-4 space-y-2.5">
-                {g.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-[14px] text-ink/60 transition-colors hover:text-green">
-                      {l}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+    <footer className="border-t border-ink/10 bg-canvas">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-end sm:justify-between">
+        <div className="text-green">
+          <Logo className="h-[19px] w-auto" />
+          {/* the DPDP line lives in Creed now, where it is a promise rather than fine print */}
+          <p className="mt-5 max-w-[34ch] text-[12.5px] leading-relaxed text-ink/35">
+            A consumer product by Equal Identity Private Limited, Hyderabad.
+          </p>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-ink/10 pt-6 sm:flex-row sm:items-center">
-          <p className="text-[13px] text-ink/40">
-            © 2026 Equal Identity Private Limited. Handled under the DPDP Act, 2023.
-          </p>
-          <p className="text-[13px] text-ink/40">
-            Made with <span className="text-green">♥</span> in Hyderabad, India
-          </p>
+        {/* -my-3 keeps the visual rhythm while the hit area reaches 44px */}
+        <div className="-my-3 flex flex-wrap gap-x-5 gap-y-0">
+          {["Privacy", "Terms", "Security", "Pricing", "Contact"].map((l) => (
+            <a
+              key={l}
+              href="#"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-2 text-[13px] text-ink/40 transition-colors hover:text-green"
+            >
+              {l}
+            </a>
+          ))}
         </div>
       </div>
     </footer>
