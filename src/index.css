@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/geist-mono";
+
+/* Indic scripts. DM Sans ships no Devanagari/Tamil/Telugu/Bengali glyphs,
+   so transcripts in those languages need real coverage, not a system fallback. */
+@import "@fontsource/noto-sans-devanagari";
+@import "@fontsource/noto-sans-tamil";
+@import "@fontsource/noto-sans-telugu";
+@import "@fontsource/noto-sans-bengali";
+
+/*
+  Equal AI - light system.
+  Brand-true: #00B140 primary and #BAFF29 lime are lifted from equal.in.
+  Every neutral, border and text tier is derived from ONE ink, so the page
+  reads as a single material rather than a pile of greys.
+*/
+@theme {
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-indic: "Noto Sans Devanagari", "Noto Sans Tamil", "Noto Sans Telugu",
+    "Noto Sans Bengali", "DM Sans Variable", sans-serif;
+
+  /* Surfaces - never pure white, never pure black */
+  --color-canvas: #fafaf7; /* warm off-white page */
+  --color-paper: #ffffff; /* elevated cards */
+  --color-tint: #f3ffea; /* brand tint, section chapters */
+  --color-sand: #f2f1ec; /* recessed surface */
+
+  /* The one ink. All text tiers and borders derive from this. */
+  --color-ink: #0f1411;
+
+  /* Brand */
+  --color-green: #00b140;
+  --color-green-deep: #008a32;
+  --color-lime: #baff29;
+  --color-lime-soft: #d2ff61;
+
+  /* Semantic */
+  --color-alert: #c8402f;
+
+  --radius-card: 18px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    max-width: 100%;
+    /* `clip`, never `hidden`. overflow-x:hidden turns html/body into a scroll
+       container, which silently kills `position: sticky` on every descendant.
+       `clip` still stops horizontal bleed but creates no scrollport. */
+    overflow-x: clip;
+  }
+
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  body {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01";
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3 {
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  /* Money and metrics never wobble */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Indic transcripts get real glyph coverage */
+  :lang(hi), :lang(mr), :lang(ta), :lang(te), :lang(bn) {
+    font-family: var(--font-indic);
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-canvas); }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-ink) 16%, transparent);
+    border-radius: 999px;
+  }
+}
+
+@layer utilities {
+  /* (a) of the anti-flat trio: one soft, long, ink-tinted shadow. Never black. */
+  .lift {
+    box-shadow:
+      0 1px 2px color-mix(in oklab, var(--color-ink) 4%, transparent),
+      0 24px 60px -28px color-mix(in oklab, var(--color-ink) 22%, transparent);
+  }
+  .lift-lg {
+    box-shadow:
+      0 1px 2px color-mix(in oklab, var(--color-ink) 5%, transparent),
+      0 40px 90px -36px color-mix(in oklab, var(--color-ink) 28%, transparent);
+  }
+
+  /* (b) faint grain, fixed and inert, so white never reads as empty */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* hairline: the ink at 10%, so borders belong to the same material */
+  .hairline {
+    border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  }
+  .hairline-t {
+    border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  }
+
+  .frost {
+    background: color-mix(in oklab, var(--color-canvas) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+  }
+
+  .text-pretty { text-wrap: pretty; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
