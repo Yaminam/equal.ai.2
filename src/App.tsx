@@ -4,6 +4,7 @@ import { Atmosphere } from "./components/Atmosphere";
 import { useSmoothScroll } from "./lib/useSmoothScroll";
 
 import { Stage } from "./components/Stage";
+import { Idea } from "./components/Idea";
 import { Category } from "./components/Category";
 import { Aspire } from "./components/Aspire";
 import { Proof } from "./components/Proof";
@@ -49,6 +50,9 @@ export default function App() {
       <main className="relative z-10">
         {/* the story. six beats, one object. nothing to operate. */}
         <Stage />
+
+        {/* the whole product in one picture: noise in, silence out, she gets through */}
+        <Idea />
 
         {/* what it is, said by what it is not */}
         <Category />
