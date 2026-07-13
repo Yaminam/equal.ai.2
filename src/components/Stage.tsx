@@ -188,9 +188,11 @@ export function Stage() {
             className="absolute inset-0"
             style={{
               backgroundImage: "radial-gradient(circle, rgba(16,20,15,0.10) 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-              maskImage: "radial-gradient(70% 60% at 64% 46%, black, transparent 80%)",
-              WebkitMaskImage: "radial-gradient(70% 60% at 64% 46%, black, transparent 80%)",
+              backgroundSize: "24px 24px",
+              // the mask follows the phone, so the lattice is densest where the
+              // light is and dissolves to nothing at the edges of the frame
+              maskImage: "radial-gradient(68% 58% at 66% 46%, black, transparent 76%)",
+              WebkitMaskImage: "radial-gradient(68% 58% at 66% 46%, black, transparent 76%)",
             }}
           />
         </motion.div>

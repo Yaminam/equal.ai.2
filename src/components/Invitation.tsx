@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "@phosphor-icons/react";
+import { Magnetic } from "./Magnetic";
 import { EASE } from "../lib/motion";
 import { inr } from "../lib/format";
 import { PLAY_STORE } from "../lib/links";
@@ -22,15 +23,14 @@ import { PLAY_STORE } from "../lib/links";
 export function Invitation() {
   const reduce = useReducedMotion();
 
+  // The door is the brightest place on the page. The light comes from below and
+  // behind it (origin off-canvas at 185%), so it reads as a lit doorway rather
+  // than a lime blob sitting on the page.
   return (
-    <section id="invite" className="relative flex min-h-[76svh] items-center overflow-hidden py-24">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute left-1/2 top-1/2 h-[440px] w-[860px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[130px]"
-          style={{ background: "radial-gradient(closest-side, rgba(186,255,41,0.4), transparent)" }}
-        />
-      </div>
-
+    <section
+      id="invite"
+      className="lit-below relative isolate flex min-h-[76svh] items-center overflow-hidden py-24"
+    >
       <div className="relative z-10 mx-auto w-full max-w-3xl px-6 text-center">
         <motion.p
           initial={reduce ? false : { opacity: 0 }}
@@ -70,19 +70,21 @@ export function Invitation() {
           transition={{ duration: 1, ease: EASE, delay: 0.85 }}
           className="mt-14"
         >
-          <a
-            href={PLAY_STORE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-7 py-4 text-[15px] font-medium text-canvas transition-colors duration-300 hover:bg-green active:scale-[0.98]"
-          >
-            Get Equal on Google Play
-            <ArrowUpRight
-              weight="bold"
-              size={16}
-              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          </a>
+          <Magnetic>
+            <a
+              href={PLAY_STORE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ink group inline-flex items-center gap-2.5 rounded-full px-7 py-4 text-[15px] font-medium text-canvas"
+            >
+              Get Equal on Google Play
+              <ArrowUpRight
+                weight="bold"
+                size={16}
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </Magnetic>
 
           {/* Said once, plainly, at the door — never in the hero, never against a
               beverage. The trust lines live in Creed, immediately above. */}

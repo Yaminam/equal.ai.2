@@ -3,6 +3,7 @@
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { Logo } from "./Logo";
+import { Magnetic } from "./Magnetic";
 import { EASE } from "../lib/motion";
 
 /*
@@ -23,7 +24,7 @@ export function Nav() {
     >
       <nav
         className={`flex w-full max-w-6xl items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 ${
-          lifted ? "frost hairline lift" : "border border-transparent"
+          lifted ? "frost" : "border border-transparent"
         }`}
       >
         <a
@@ -34,12 +35,14 @@ export function Nav() {
           <Logo className="h-[19px] w-auto" />
         </a>
 
-        <a
-          href="#invite"
-          className="inline-flex min-h-[44px] items-center rounded-full bg-ink px-5 text-[14px] font-medium text-canvas transition-colors duration-300 hover:bg-green"
-        >
-          Get the app
-        </a>
+        <Magnetic>
+          <a
+            href="#invite"
+            className="btn-ink inline-flex min-h-[44px] items-center rounded-full px-5 text-[14px] font-medium text-canvas"
+          >
+            Get the app
+          </a>
+        </Magnetic>
       </nav>
     </motion.header>
   );

@@ -9,11 +9,32 @@
 @import "@fontsource/noto-sans-tamil";
 
 /*
-  Equal AI.
+  Equal AI — the material system.
 
   One idea: the page is a single phone call, and your scroll handles it.
-  So the system is deliberately narrow. One typeface. One accent. One texture.
-  Nothing decorative competes with the object.
+
+  The page was flat, and flat reads as unfinished rather than restrained. The
+  fix is NOT atmosphere — no aurora, no mesh gradient, no purple. Those belong
+  to dark product sites, and pasting them onto a warm paper canvas is exactly
+  how a premium page turns into a template.
+
+  The fix is MATERIAL. Four rules, taken from what Linear, Clerk, Vercel and
+  Supabase actually ship:
+
+  1. A GRADIENT IS A LIGHT SOURCE, NOT A DECORATION. Every gradient here has
+     its origin OFF-CANVAS and fades to itself at zero alpha — never to a
+     second hue, never to `transparent` (which greys the midpoint in some
+     engines). If you cannot say where the lamp is, delete it.
+
+  2. ALPHAS ARE TINY. Linear's hero glow is 4%. Nothing here exceeds 12%.
+     Template gradients live at 40-80%; that is the entire difference.
+
+  3. EVERY RAISED SURFACE IS LIT FROM ABOVE. `inset 0 1px 0 white` on the top
+     edge, ink on the bottom. One line, and a rectangle becomes an object.
+
+  4. SHADOWS ARE INK, NEVER BLACK. On a warm canvas, black shadows look dirty.
+     Every shadow below is `--color-ink` at low alpha, stacked 3-4 deep with
+     decaying opacity, because that is what a real penumbra does.
 */
 @theme {
   --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
@@ -35,12 +56,29 @@
   --color-lime: #baff29;
 
   --color-alert: #c8402f;
+
+  /* the shadow scale. ink-tinted, multi-layer, decaying. */
+  --shadow-sm: 0 0 0 1px #10140f0f, 0 1px 2px -1px #10140f1a;
+  --shadow-md:
+    0 0 0 1px #10140f0f,
+    0 1px 2px -1px #10140f14,
+    0 8px 20px -8px #10140f1f;
+  --shadow-lg:
+    0 0 0 1px #10140f12,
+    0 2px 4px -2px #10140f1a,
+    0 12px 24px -10px #10140f1f,
+    0 32px 64px -24px #10140f26;
+
+  /* the one motion curve. expo-out: slow, heavy, confident. never a bounce. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
+    /* NEVER `hidden` — it silently kills `position: sticky`, and the whole
+       pinned story on this page depends on it. */
     overflow-x: clip;
     max-width: 100%;
   }
@@ -65,13 +103,9 @@
     text-wrap: balance;
   }
 
-  .tnum {
-    font-variant-numeric: tabular-nums;
-  }
+  .tnum { font-variant-numeric: tabular-nums; }
 
-  :lang(hi), :lang(ta) {
-    font-family: var(--font-indic);
-  }
+  :lang(hi), :lang(ta) { font-family: var(--font-indic); }
 
   ::-webkit-scrollbar { width: 9px; }
   ::-webkit-scrollbar-track { background: var(--color-canvas); }
@@ -82,15 +116,41 @@
 }
 
 @layer utilities {
-  /* the one texture. film grain, fixed, inert. */
+  /*
+    The grain.
+
+    This was the single worst bug in the old system: `opacity: 0.032` with no
+    blend mode, which is invisible. Grain has to MULTIPLY into a light ground
+    (and `overlay` into a dark one) or it does nothing at all.
+
+    256px tile: small enough to cache, large enough that the repeat is not
+    visible. The size MUST be pinned, or the SVG scales and the grain turns to
+    mush.
+  */
   .grain::after {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.032;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.42;
+    mix-blend-mode: multiply;
+    background-size: 256px 256px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+
+  /* Film moves. Static grain is a texture; moving grain is film. Four steps at
+     ~10fps — 60fps reads as TV static. Translation only, so it composites. */
+  @media (prefers-reduced-motion: no-preference) {
+    .grain::after { animation: grain-drift 0.8s steps(1) infinite; }
+  }
+
+  @keyframes grain-drift {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(-2%, 1%); }
+    50%  { transform: translate(1%, -2%); }
+    75%  { transform: translate(-1%, -1%); }
+    100% { transform: translate(0, 0); }
   }
 
   /* borders are the ink at 9 percent, so they belong to the same material */
@@ -98,21 +158,149 @@
     border: 1px solid color-mix(in oklab, var(--color-ink) 9%, transparent);
   }
 
-  /* one soft, long, ink-tinted shadow. never black. */
+  /*
+    A raised surface. Lit from above, ink-tinted shadow beneath.
+    The two insets are what make it read as a physical object.
+  */
   .lift {
     box-shadow:
-      0 2px 6px color-mix(in oklab, var(--color-ink) 4%, transparent),
-      0 40px 80px -30px color-mix(in oklab, var(--color-ink) 26%, transparent);
+      var(--shadow-lg),
+      inset 0 1px 0 #ffffff,
+      inset 0 -1px 0 #10140f0a;
   }
 
-  /* the nav floats over a pinned object, so it has to blur what is behind it */
+  .lift-sm {
+    box-shadow:
+      var(--shadow-md),
+      inset 0 1px 0 #ffffffd9;
+  }
+
+  /*
+    The 1px gradient border. Two backgrounds, two clip boxes — no pseudo
+    element, no mask compositing. Darker at the top-left, green at the
+    bottom-right: the border itself implies where the light is.
+  */
+  .edge {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--color-paper), var(--color-canvas)) padding-box,
+      linear-gradient(155deg, #10140f24 0%, #10140f0a 45%, #00b14038 100%) border-box;
+  }
+
+  /*
+    Ambient light. The origin is OFF-CANVAS (190% down, -40% up), so you only
+    ever see the falloff — it reads as light in a room, never as a blob with an
+    edge. Note every stop fades to the SAME hue at zero alpha (#00b14000), not
+    to `transparent`.
+  */
+  .lit-below::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 185%, #00b14026, #00b14000 60%);
+  }
+
+  .lit-above::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 12% -45%, #baff2924, #baff2900 55%);
+  }
+
+  /*
+    The dot lattice, masked. An UNMASKED dot grid is the single most
+    template-looking thing on the internet; the mask is not optional.
+  */
+  .lattice {
+    background-image: radial-gradient(#10140f1f 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000, transparent 74%);
+            mask-image: radial-gradient(70% 60% at 50% 40%, #000, transparent 74%);
+  }
+
+  /*
+    The nav floats over a pinned object, so it has to blur what is behind it.
+    `saturate` is the tell — blur alone is a grey veil, not glass.
+
+    Its shadow is deliberately TIGHT. A floating pill is not a card: giving it
+    the 64px ambient spread of `.lift` smears a halo around it, and the smear is
+    worst exactly where the nav crosses the dark/light seam. Glass gets a
+    hairline and a close contact shadow, nothing more.
+  */
   .frost {
-    background: color-mix(in oklab, var(--color-canvas) 70%, transparent);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    /*
+      88%, not 68%.
+
+      The nav is fixed, so it floats over the seam where the dark Creed section
+      meets the light Invitation. A translucent pane with a wide blur samples
+      that hard black-to-cream edge and smears it straight through the pill —
+      the glass fills with grey mud exactly when it crosses a boundary. Real
+      glass does take its colour from its backdrop, but blurring a high-contrast
+      seam is not a material, it is an artefact.
+
+      So the pane is nearly opaque and the blur is tight. It still reads as
+      glass (the saturate is doing that work), and it stays one consistent
+      surface no matter what passes underneath.
+    */
+    background: color-mix(in oklab, var(--color-canvas) 88%, transparent);
+    backdrop-filter: blur(10px) saturate(170%);
+    -webkit-backdrop-filter: blur(10px) saturate(170%);
+    box-shadow:
+      0 0 0 1px #10140f0f,
+      0 1px 2px -1px #10140f14,
+      0 6px 16px -8px #10140f24,
+      inset 0 1px 0 #ffffff8c;
+  }
+
+  /*
+    The button is a physical object. Gradient face, colored ambient glow to
+    lift it off the page, white inset on the top edge for the light.
+    On :active the outer shadow collapses to an inset — it presses.
+  */
+  .btn-ink {
+    background: linear-gradient(#1c221a, var(--color-ink));
+    box-shadow:
+      0 0 0 1px #10140f,
+      0 1px 2px #10140f2e,
+      0 10px 24px -10px #10140f80,
+      inset 0 1px 0 #ffffff26;
+    transition: box-shadow 0.3s var(--ease-out-expo),
+                transform 0.12s var(--ease-out-expo),
+                background 0.3s var(--ease-out-expo);
+  }
+  .btn-ink:hover {
+    background: linear-gradient(#00c247, var(--color-green));
+    box-shadow:
+      0 0 0 1px #00913433,
+      0 1px 2px #10140f26,
+      0 14px 30px -10px #00b14099,
+      inset 0 1px 0 #ffffff59;
+  }
+  .btn-ink:active {
+    transform: translateY(0.5px);
+    box-shadow: 0 0 0 1px #00913433, inset 0 2px 5px #00602099;
   }
 
   .text-pretty { text-wrap: pretty; }
+}
+
+/*
+  Two blurred blobs, drifting on a 30-40s loop. This is the ONLY thing on the
+  page that moves while the visitor is still, and it is the whole answer to
+  "the page looks dead." Transform-only, so it lives on the compositor and
+  costs nothing. Never a keyframe on `filter` or `background`.
+*/
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(4%, -3%, 0) scale(1.08); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50%      { transform: translate3d(-5%, 4%, 0) scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {

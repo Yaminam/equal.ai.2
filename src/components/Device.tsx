@@ -29,13 +29,28 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
         }}
       />
 
+      {/*
+        The body is a machined object, not a rectangle.
+
+        A subtle top-left-to-bottom-right gradient across the shell gives it a
+        single light source. The inset white hairline along the top edge is the
+        specular catch on the chamfer; the inset dark line at the bottom is where
+        the light does not reach. Those two lines are what stop it reading flat.
+      */}
       <div
-        className={`relative rounded-[2.9rem] bg-ink p-[9px] transition-shadow duration-700 ${
-          dark ? "ring-1 ring-canvas/10" : "lift ring-1 ring-ink/10"
-        }`}
+        className="relative rounded-[2.9rem] p-[9px] transition-shadow duration-700"
+        style={{
+          background: "linear-gradient(160deg, #2a312a 0%, #10140f 42%, #080b08 100%)",
+          boxShadow: dark
+            ? "0 0 0 1px #faf9f61f, inset 0 1px 0 #ffffff2e, inset 0 -1px 0 #0000004d, 0 40px 80px -40px #00000099"
+            : "0 0 0 1px #10140f, 0 2px 6px -2px #10140f2e, 0 24px 48px -20px #10140f52, 0 48px 90px -40px #10140f3d, inset 0 1px 0 #ffffff33, inset 0 -1px 0 #00000059",
+        }}
       >
         <div className="absolute left-1/2 top-[19px] z-20 h-[22px] w-[84px] -translate-x-1/2 rounded-full bg-ink" />
-        <div className="relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas">
+        <div
+          className="relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas"
+          style={{ boxShadow: "inset 0 0 0 1px #00000040" }}
+        >
           {children}
         </div>
       </div>

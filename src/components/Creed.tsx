@@ -49,7 +49,7 @@ export function Creed() {
           The terms
         </motion.p>
 
-        <div className="grid gap-px overflow-hidden md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           {CREED.map((line, i) => (
             <motion.div
               key={line}
@@ -57,9 +57,14 @@ export function Creed() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.8, ease: EASE, delay: i * 0.12 }}
-              className="py-8 md:px-8 md:py-0 md:first:pl-0"
+              className="rounded-2xl p-7 transition-colors duration-500 hover:bg-canvas/[0.03]"
+              style={{
+                // on ink, the light comes from above as a faint white top edge and
+                // the border is canvas at 8% — the same material logic, inverted
+                boxShadow: "0 0 0 1px #faf9f614, inset 0 1px 0 #ffffff14",
+              }}
             >
-              <span aria-hidden className="mb-7 block h-px w-10 bg-canvas/20" />
+              <span aria-hidden className="mb-7 block h-px w-10 bg-green/50" />
               <p className="max-w-[22ch] text-[clamp(1.15rem,1.8vw,1.5rem)] leading-snug tracking-tight text-canvas/85">
                 {line}
               </p>

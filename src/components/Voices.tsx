@@ -59,20 +59,25 @@ export function Voices() {
           The people who stopped picking up.
         </motion.h2>
 
-        <div className="mt-16 grid gap-12 md:grid-cols-3 md:gap-10">
+        {/* Cards, not bare text. `.edge` draws a 1px border that is ink at the
+            top-left and green at the bottom-right — the border itself says where
+            the light is. `.lift-sm` puts a white inset on the top edge so the
+            card sits above the page instead of being printed on it. */}
+        <div className="mt-16 grid gap-6 md:grid-cols-3">
           {VOICES.map((v, i) => (
             <motion.figure
               key={v.id}
               initial={reduce ? false : { opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
+              transition={{ duration: 0.9, ease: EASE, delay: i * 0.1 }}
+              className="edge lift-sm flex flex-col rounded-2xl p-7 transition-transform duration-500 hover:-translate-y-1"
             >
-              <span aria-hidden className="mb-7 block h-px w-10 bg-ink/15" />
-              <blockquote className="text-[18px] leading-relaxed tracking-tight text-ink/80">
+              <span aria-hidden className="mb-6 block h-px w-9 bg-green/40" />
+              <blockquote className="flex-1 text-[17px] leading-relaxed tracking-tight text-ink/80">
                 {v.quote}
               </blockquote>
-              <figcaption className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-ink/30">
+              <figcaption className="mt-7 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink/30">
                 {v.name} — {v.role}
               </figcaption>
             </motion.figure>

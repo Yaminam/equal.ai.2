@@ -1,5 +1,7 @@
 import { Loader } from "./components/Loader";
 import { Nav } from "./components/Nav";
+import { Atmosphere } from "./components/Atmosphere";
+import { useSmoothScroll } from "./lib/useSmoothScroll";
 
 import { Stage } from "./components/Stage";
 import { Category } from "./components/Category";
@@ -35,9 +37,13 @@ import { Footer } from "./components/Footer";
   up on sand, and Creed goes dark one last time so the door opens into light.
 */
 export default function App() {
+  useSmoothScroll();
+
   return (
     <div className="grain relative min-h-[100dvh]">
       <Loader />
+      {/* the one thing alive while you sit still */}
+      <Atmosphere />
       <Nav />
 
       <main className="relative z-10">

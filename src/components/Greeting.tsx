@@ -25,8 +25,21 @@ export function Greeting() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden bg-sand py-28 md:py-32">
-      <div className="mx-auto max-w-4xl px-6 text-center">
+    <section className="lit-above relative isolate overflow-hidden bg-sand py-28 md:py-32">
+      {/* the section edge dissolves rather than cutting — a hard seam between two
+          grounds is the stacked-blocks look that reads as a template */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-40"
+        style={{ background: "linear-gradient(#faf9f6, #faf9f600)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
+        style={{ background: "linear-gradient(#faf9f600, #faf9f6)" }}
+      />
+
+      <div className="relative mx-auto max-w-4xl px-6 text-center">
         <motion.p
           initial={reduce ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
