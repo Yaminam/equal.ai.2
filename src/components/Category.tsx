@@ -203,7 +203,7 @@ export function Category() {
           aria-hidden
           className="mt-16 text-[clamp(1.9rem,5vw,3.9rem)] font-medium leading-[1.12] tracking-[-0.035em]"
         >
-          <span className="text-ink/35">Equal is</span>{" "}
+          <span className="text-ink/70">Equal is</span>{" "}
 
           {/* the invisible twin. it is the only thing that knows how wide the
               slot should be, and it measures in the real font at the real size. */}
@@ -288,7 +288,7 @@ export function Category() {
               )}
             </AnimatePresence>
           </motion.span>
-          <span className="text-ink/35">.</span>
+          <span className="text-ink/70">.</span>
         </div>
 
         {/*
