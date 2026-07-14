@@ -7,7 +7,6 @@ import { Stage } from "./components/Stage";
 import { Idea } from "./components/Idea";
 import { Category } from "./components/Category";
 import { Privilege } from "./components/Privilege";
-import { Greeting } from "./components/Greeting";
 import { Voices } from "./components/Voices";
 import { Creed } from "./components/Creed";
 import { Invitation } from "./components/Invitation";
@@ -58,9 +57,6 @@ export default function App() {
 
         {/* the aspiration. one sentence, and the room to say it in. */}
         <Privilege />
-
-        {/* the assistant, in its own voice */}
-        <Greeting />
 
         {/* the people you would be joining */}
         <Voices />
