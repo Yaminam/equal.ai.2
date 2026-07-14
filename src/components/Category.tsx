@@ -70,6 +70,34 @@ export function Category() {
   const [dead, setDead] = useState<string[]>([]); // the graveyard
   const [answered, setAnswered] = useState(false);
 
+  /*
+    THE SLOT MORPHS. IT DOES NOT SNAP.
+
+    "a caller ID" and "a do-not-disturb switch" are wildly different widths. Swap
+    text inside a fixed inline box and the sentence JUMPS on every elimination —
+    which is the single most common way a rotating-word hero looks cheap.
+
+    Notion solves it by animating the CONTAINER: a hidden span measures the
+    incoming word, a ResizeObserver reads its width, and the slot animates its
+    inline-size in pixels. The sentence breathes instead of stuttering. Same
+    trick here — measured off a real, invisible copy of the word, in the real
+    font, so it survives the webfont landing and every breakpoint of `clamp()`.
+  */
+  const measure = useRef<HTMLSpanElement>(null);
+  const [slotW, setSlotW] = useState<number | null>(null);
+  const shown = answered ? RIGHT : i >= 0 ? WRONG[i] : "";
+
+  useEffect(() => {
+    const el = measure.current;
+    if (!el) return;
+    const read = () => setSlotW(el.getBoundingClientRect().width);
+    read();
+    document.fonts?.ready.then(read).catch(() => {});
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [shown]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -171,9 +199,27 @@ export function Category() {
         </div>
 
         {/* THE SENTENCE. one slot. everything happens inside it. */}
-        <div className="mt-16 text-[clamp(1.9rem,5vw,3.9rem)] font-medium leading-[1.12] tracking-[-0.035em]">
+        <div
+          aria-hidden
+          className="mt-16 text-[clamp(1.9rem,5vw,3.9rem)] font-medium leading-[1.12] tracking-[-0.035em]"
+        >
           <span className="text-ink/35">Equal is</span>{" "}
-          <span className="relative inline-block align-baseline">
+
+          {/* the invisible twin. it is the only thing that knows how wide the
+              slot should be, and it measures in the real font at the real size. */}
+          <span
+            ref={measure}
+            aria-hidden
+            className="pointer-events-none absolute -z-10 whitespace-nowrap opacity-0"
+          >
+            {shown}
+          </span>
+
+          <motion.span
+            className="relative inline-block align-baseline"
+            animate={{ width: reduce || slotW === null ? "auto" : slotW }}
+            transition={{ duration: 0.45, ease: EASE }}
+          >
             <AnimatePresence mode="wait">
               {word && (
                 <motion.span
@@ -241,9 +287,23 @@ export function Category() {
                 </motion.span>
               )}
             </AnimatePresence>
-          </span>
+          </motion.span>
           <span className="text-ink/35">.</span>
         </div>
+
+        {/*
+          The whole claim, intact, for anyone who is not watching it happen.
+
+          The visible sentence is a MOTION — a slot being filled and emptied six
+          times — and motion is not readable by a screen reader, which would
+          otherwise hear "Equal is" followed by a stream of half-struck nouns.
+          Vercel's rotating hero does exactly this: the fragments animate, and a
+          visually-hidden sibling carries the finished sentence. The animation is
+          the reading; this is the artifact.
+        */}
+        <p className="sr-only">
+          Equal is not {WRONG.join(", not ")}. Equal is {RIGHT}.
+        </p>
 
         {/* THE GRAVEYARD. everything it is not, settling below the sentence that
             rejected it. This is the record, and it costs one line. */}
