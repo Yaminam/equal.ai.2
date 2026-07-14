@@ -10,26 +10,41 @@ import { PLAY_STORE } from "../lib/links";
 /*
   The door.
 
-  This used to be an invite form: a phone field, a fake queue, and the line
-  "invitations open in small numbers each month." The app is already on the
-  Play Store, so all of that was a lie standing between a willing buyer and a
-  button that exists. Scarcity you don't actually enforce is not prestige, it
-  is friction — and the first person who searches the store and finds it sitting
-  there, installable, stops trusting the rest of the page.
+  This was once an invite form: a phone field, a fake queue, and the line
+  "invitations open in small numbers each month." The app is already on Google
+  Play, so all of that was a lie standing between a willing buyer and a button
+  that exists. Scarcity you do not enforce is not prestige, it is friction, and
+  the first person who searches the store and finds it sitting there installable
+  stops trusting the rest of the page.
 
-  So the prestige stays in the language and leaves the mechanics. We still say
-  not everyone needs this. Then we get out of the way.
+  So the prestige stays in the language and leaves the mechanics.
+
+  ── THE HEADLINE IS THE WHOLE POSITIONING ────────────────────────────────────
+
+  "Some people hire a gatekeeper. You just install one."
+
+  That sentence does in eight words what the rest of the page spends nine
+  sections on: it names the elite thing, and then it hands it to you. It is the
+  only line on the site that contains both halves of the pitch.
+
+  ── AND THE BODY REFRAMES THE PRODUCT ONE LAST TIME ──────────────────────────
+
+  A gatekeeper is not about keeping people out. That is the spam-filter reading,
+  and it is the reading we have spent the whole page refusing. It is about
+  protecting what matters most: your attention. The final paragraph says so
+  plainly, because this is the last thing anyone reads before they decide.
+
+  No em dash in it. The original copy had "what matters most—your attention";
+  a colon does the same work and the site has none.
 */
+
 export function Invitation() {
   const reduce = useReducedMotion();
 
-  // The door is the brightest place on the page. The light comes from below and
-  // behind it (origin off-canvas at 185%), so it reads as a lit doorway rather
-  // than a lime blob sitting on the page.
   return (
     <section
       id="invite"
-      className="lit-below relative isolate flex min-h-[76svh] items-center overflow-hidden py-24"
+      className="lit-below relative isolate flex min-h-[82svh] items-center overflow-hidden py-24"
     >
       <div className="relative z-10 mx-auto w-full max-w-3xl px-6 text-center">
         <motion.p
@@ -39,35 +54,40 @@ export function Invitation() {
           transition={{ duration: 0.9 }}
           className="mb-10 font-mono text-[11px] uppercase tracking-[0.24em] text-ink/30"
         >
-          Membership
+          Your turn
         </motion.p>
 
         <motion.h2
           initial={reduce ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1.2, ease: EASE }}
-          className="text-[clamp(2.2rem,6vw,4.8rem)] font-medium leading-[1]"
+          transition={{ duration: 1.1, ease: EASE }}
+          className="mx-auto max-w-[18ch] text-[clamp(2rem,5.2vw,4rem)] font-medium leading-[1.04] tracking-[-0.04em]"
         >
-          not everyone needs a gatekeeper.
+          Some people hire a gatekeeper.{" "}
+          <span className="text-green">You just install one.</span>
         </motion.h2>
 
         <motion.p
           initial={reduce ? false : { opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, ease: EASE, delay: 0.4 }}
-          className="mx-auto mt-8 max-w-[34ch] text-[16.5px] leading-relaxed text-ink/45"
+          transition={{ duration: 0.9, ease: EASE, delay: 0.35 }}
+          className="mx-auto mt-10 max-w-[58ch] text-pretty text-[16.5px] leading-relaxed text-ink/45"
         >
-          If you do, it is already waiting on your phone.
+          A gatekeeper isn&rsquo;t about keeping people out. It&rsquo;s about
+          protecting what matters most: your attention. Equal quietly answers
+          every call, handles routine conversations, filters distractions, and
+          forwards only the ones that deserve your time. You stay available for
+          what matters, without being interrupted by everything else.
         </motion.p>
 
-        {/* held breath: the line lands, then the door appears */}
+        {/* held breath: the argument lands, and only then does the door appear */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.85 }}
+          transition={{ duration: 1, ease: EASE, delay: 0.8 }}
           className="mt-14"
         >
           <Magnetic>
@@ -86,10 +106,10 @@ export function Invitation() {
             </a>
           </Magnetic>
 
-          {/* Said once, plainly, at the door — never in the hero, never against a
-              beverage. The trust lines live in Creed, immediately above. */}
+          {/* the price, said once, plainly, at the door. never in the hero, and
+              never measured against a beverage. */}
           <p className="tnum mt-8 text-[13px] text-ink/30">
-            Membership, {inr(249)} a month.
+            Starts at {inr(249)} a month. Cancel anytime.
           </p>
         </motion.div>
       </div>
