@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { PhoneCall } from "@phosphor-icons/react";
+import { Device, ScreenAmma } from "./Device";
 import { Magnetic } from "./Magnetic";
 import { EASE } from "../lib/motion";
 import { inr } from "../lib/format";
@@ -126,7 +126,7 @@ export function Invitation() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1.2, ease: EASE, delay: 0.65 }}
-            className="relative mx-auto w-full max-w-[290px]"
+            className="relative mx-auto w-full max-w-[264px]"
           >
             {/* the only light in the composition, and it is hers */}
             <div
@@ -147,64 +147,26 @@ export function Invitation() {
                 />
               ))}
 
-            {/* the phone, face up, at last */}
-            <div
-              className="relative rounded-[2.4rem] p-[8px]"
-              style={{
-                background: "linear-gradient(160deg, #2a312a 0%, #10140f 42%, #080b08 100%)",
-                boxShadow:
-                  "0 0 0 1px #10140f, 0 30px 60px -24px rgba(16,20,15,0.55), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.35)",
-              }}
-            >
-              <div className="relative overflow-hidden rounded-[2rem] bg-canvas px-6 py-8 text-ink">
-                <p className="text-center font-mono text-[9.5px] uppercase tracking-[0.2em] text-ink/30">
-                  Incoming call
-                </p>
+            {/*
+              THE REAL HANDSET.
 
-                <div className="mt-7 flex flex-col items-center">
-                  <span
-                    className="grid size-[68px] place-items-center rounded-full text-[22px] font-semibold text-white"
-                    style={{
-                      background: "linear-gradient(180deg, #17c956, #00b140)",
-                      boxShadow:
-                        "0 12px 28px -8px rgba(0,177,64,0.55), inset 0 1px 0 rgba(255,255,255,0.45)",
-                    }}
-                  >
-                    A
-                  </span>
-
-                  <p className="mt-5 text-[20px] font-semibold tracking-tight">Amma</p>
-                  <p className="mt-1 text-[12px] text-ink/40">Mobile</p>
-                </div>
-
-                {/* it rang. that is the whole product. */}
-                <div className="mt-8 flex items-center justify-center gap-2.5">
-                  <motion.span
-                    className="grid size-[46px] place-items-center rounded-full text-white"
-                    style={{
-                      background: "linear-gradient(180deg, #17c956, #00b140)",
-                      boxShadow:
-                        "0 8px 20px -6px rgba(0,177,64,0.6), inset 0 1px 0 rgba(255,255,255,0.45)",
-                    }}
-                    animate={reduce ? undefined : { scale: [1, 1.07, 1] }}
-                    transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <PhoneCall weight="fill" size={19} />
-                  </motion.span>
-                </div>
-
-                <p className="mt-6 text-center text-[11.5px] text-ink/35">
-                  The only call that got through.
-                </p>
-              </div>
-            </div>
+              This was a bespoke rounded card with a name on it, and a bespoke card
+              is a GRAPHIC. The same phone the rest of the page uses -- with its
+              status bar, its Dynamic Island, its Accept and Decline buttons and its
+              home indicator -- is a CALL. The whole argument of this section is that
+              this is your phone doing the ordinary thing it is meant to do, exactly
+              once, so it has to be the ordinary phone.
+            */}
+            <Device>
+              <ScreenAmma />
+            </Device>
           </motion.div>
         </div>
 
         {/* the signature. the last thing anyone reads, and it says nothing new. */}
         <motion.p
           {...step(5)}
-          className="mt-24 text-center font-mono text-[9.5px] uppercase tracking-[0.3em] text-ink/[0.18]"
+          className="mt-24 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-ink/40"
         >
           Designed to protect your attention
         </motion.p>

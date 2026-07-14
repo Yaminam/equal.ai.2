@@ -344,6 +344,71 @@ export function ScreenRinging() {
   );
 }
 
+/* ------------------------------------------------- the last frame of the page
+   Amma, calling. The one that got through.
+
+   It reuses the same handset, the same status bar, the same Accept and Decline
+   buttons as every other screen on the site — because the whole argument is that
+   this is YOUR phone, doing the ordinary thing it is supposed to do, exactly
+   once. A bespoke card would have made it a graphic. This makes it a call. */
+export function ScreenAmma() {
+  const reduce = useReducedMotion();
+  return (
+    <Frame>
+      <Bar live />
+
+      <div className="flex flex-1 flex-col items-center px-6 pt-[13%] text-center">
+        {/* she has a photo, because she is in your contacts. that is the whole
+            difference between her and everyone else the page has shown you. */}
+        <div className="relative grid size-[92px] place-items-center">
+          {!reduce && (
+            <>
+              <motion.span
+                className="absolute inset-0 rounded-full border border-green/45"
+                animate={{ scale: [1, 1.55], opacity: [0.7, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              />
+              <motion.span
+                className="absolute inset-0 rounded-full border border-green/45"
+                animate={{ scale: [1, 1.55], opacity: [0.7, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 1 }}
+              />
+            </>
+          )}
+          <span
+            className="grid size-[76px] place-items-center rounded-full text-[26px] font-semibold text-white"
+            style={{
+              background: "linear-gradient(180deg, #17c956, #00b140)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px -8px rgba(0,177,64,0.55)",
+            }}
+          >
+            A
+          </span>
+        </div>
+
+        <p className="mt-5 text-[19px] font-semibold tracking-tight">Amma</p>
+        <p className="mt-1 text-[12px] text-ink/40">mobile</p>
+        <p className="mt-4 flex items-center gap-1.5 text-[11.5px] font-medium text-green">
+          <span className="relative flex size-1.5">
+            {!reduce && (
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-green" />
+            )}
+            <span className="relative inline-flex size-1.5 rounded-full bg-green" />
+          </span>
+          Equal put her through
+        </p>
+      </div>
+
+      <p className="tnum pb-4 text-center font-mono text-[9px] uppercase tracking-[0.18em] text-ink/25">
+        the only call today
+      </p>
+      <CallActions ringing />
+      <HomeBar />
+    </Frame>
+  );
+}
+
 /* -------------------------------------------------------------- 01 answering
    The in-call screen. Live timer, the assistant's own bar, and the single red
    end-call button a real call has once it is connected. */
