@@ -6,8 +6,7 @@ import { useSmoothScroll } from "./lib/useSmoothScroll";
 import { Stage } from "./components/Stage";
 import { Idea } from "./components/Idea";
 import { Category } from "./components/Category";
-import { Aspire } from "./components/Aspire";
-import { Proof } from "./components/Proof";
+import { Evening } from "./components/Evening";
 import { Greeting } from "./components/Greeting";
 import { Voices } from "./components/Voices";
 import { Creed } from "./components/Creed";
@@ -57,9 +56,8 @@ export default function App() {
         {/* what it is, said by what it is not */}
         <Category />
 
-        {/* the dark chapter: why you want in, and the number that proves it */}
-        <Aspire />
-        <Proof />
+        {/* the aspiration: one evening, and the only call that got through */}
+        <Evening />
 
         {/* the assistant, in its own voice */}
         <Greeting />
