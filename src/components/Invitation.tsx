@@ -50,7 +50,7 @@ export function Invitation() {
   return (
     <section
       id="invite"
-      className="lit-below relative isolate flex min-h-[92svh] items-center overflow-hidden py-28"
+      className="lit-below relative isolate flex min-h-[80svh] items-center overflow-hidden py-24"
     >
       <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center">
         <motion.p
@@ -69,7 +69,7 @@ export function Invitation() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.3, ease: EASE, delay: 0.15 }}
-          className="mx-auto mt-16 max-w-[17ch] text-[clamp(2.3rem,6vw,4.8rem)] font-medium leading-[1.02] tracking-[-0.045em]"
+          className="mx-auto mt-12 max-w-[17ch] text-[clamp(2.3rem,6vw,4.8rem)] font-medium leading-[1.02] tracking-[-0.045em]"
         >
           Some people hire a gatekeeper.{" "}
           <span className="text-green">You just install one.</span>
@@ -82,7 +82,7 @@ export function Invitation() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.1, ease: EASE, delay: 0.55 }}
-          className="mx-auto mt-12 max-w-[34ch] text-[clamp(1.1rem,1.9vw,1.5rem)] leading-relaxed text-ink/45"
+          className="mx-auto mt-10 max-w-[34ch] text-[clamp(1.1rem,1.9vw,1.5rem)] leading-relaxed text-ink/45"
         >
           The privilege is already waiting on your phone.
         </motion.p>
@@ -93,7 +93,7 @@ export function Invitation() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.2, ease: EASE, delay: 1.05 }}
-          className="mt-20"
+          className="mt-12"
         >
           <Magnetic>
             <a
@@ -106,8 +106,21 @@ export function Invitation() {
             </a>
           </Magnetic>
 
-          <p className="tnum mt-10 text-[13px] text-ink/30">
+          <p className="tnum mt-6 text-[13px] text-ink/30">
             Starts at {inr(249)}/month.
+          </p>
+
+          {/*
+            iOS, stated once, quietly, and never as a button.
+
+            A greyed-out App Store badge is a dead control: it invites a tap, does
+            nothing, and the visitor learns that this page's buttons cannot be
+            trusted. A line of type promises nothing and costs nothing. The dot is
+            the only ornament, and it is doing the work of a whole badge.
+          */}
+          <p className="mt-3 flex items-center justify-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.2em] text-ink/25">
+            <span className="block size-1 rounded-full bg-ink/25" />
+            iPhone coming soon
           </p>
         </motion.div>
       </div>
