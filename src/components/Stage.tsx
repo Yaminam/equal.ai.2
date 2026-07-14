@@ -20,6 +20,7 @@ import {
   ScreenScam,
 } from "./Device";
 import { EASE } from "../lib/motion";
+import { PLAY_STORE } from "../lib/links";
 
 /*
   The spine of the page.
@@ -261,7 +262,9 @@ export function Stage() {
                     className="mt-8 hidden sm:block lg:mt-11"
                   >
                     <a
-                      href="#invite"
+                      href={PLAY_STORE}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={`group inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-medium transition-colors duration-300 ${
                         dark
                           ? "bg-canvas text-ink hover:bg-green hover:text-white"

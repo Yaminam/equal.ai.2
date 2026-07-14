@@ -1,8 +1,9 @@
 /*
   The app is live on the Play Store. Every call-to-action on this page points
-  here, and nowhere else.
+  here, and nowhere else — so this is the one string on the site that, if it is
+  wrong, silently breaks the only thing the page is for.
 
-  TODO(equal): replace the package id below with the real one before launch.
-  The rest of the page reads correctly the moment this is right.
+  It lives in one file for exactly that reason. Never inline it.
 */
-export const PLAY_STORE = "https://play.google.com/store/apps/details?id=in.equal.app";
+export const PLAY_STORE =
+  "https://play.google.com/store/apps/details?id=in.equal.ai.assistant";

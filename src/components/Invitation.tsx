@@ -1,41 +1,47 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight } from "@phosphor-icons/react";
 import { Magnetic } from "./Magnetic";
 import { EASE } from "../lib/motion";
 import { inr } from "../lib/format";
 import { PLAY_STORE } from "../lib/links";
 
 /*
-  The door.
+  The closing scene.
 
-  This was once an invite form: a phone field, a fake queue, and the line
-  "invitations open in small numbers each month." The app is already on Google
-  Play, so all of that was a lie standing between a willing buyer and a button
-  that exists. Scarcity you do not enforce is not prestige, it is friction, and
-  the first person who searches the store and finds it sitting there installable
-  stops trusting the rest of the page.
+  This is not a conversion block, and the difference matters. A conversion block
+  argues; a closing scene resolves. By the time anyone reaches this section they
+  have already been told what the product does, six times, in six ways. Saying it
+  a seventh time here would not persuade them. It would only reveal that we did
+  not trust the first six.
 
-  So the prestige stays in the language and leaves the mechanics.
+  So there is nothing here to learn. There is only the last frame of the story,
+  and the person the visitor has spent the whole page deciding to become.
 
-  ── THE HEADLINE IS THE WHOLE POSITIONING ────────────────────────────────────
+  ── WHAT WAS CUT, AND WHY ────────────────────────────────────────────────────
 
-  "Some people hire a gatekeeper. You just install one."
+  The previous version closed with a 58-word paragraph explaining what a
+  gatekeeper is and what Equal does with your calls. Every word of it was true
+  and every word of it was in the way. An explanation at the end of a story is a
+  writer who does not believe the story worked.
 
-  That sentence does in eight words what the rest of the page spends nine
-  sections on: it names the elite thing, and then it hands it to you. It is the
-  only line on the site that contains both halves of the pitch.
+  Four elements survive. A label, a line, a sentence, a button.
 
-  ── AND THE BODY REFRAMES THE PRODUCT ONE LAST TIME ──────────────────────────
+  ── THE ONE SENTENCE ─────────────────────────────────────────────────────────
 
-  A gatekeeper is not about keeping people out. That is the spam-filter reading,
-  and it is the reading we have spent the whole page refusing. It is about
-  protecting what matters most: your attention. The final paragraph says so
-  plainly, because this is the last thing anyone reads before they decide.
+  "The privilege is already waiting on your phone."
 
-  No em dash in it. The original copy had "what matters most—your attention";
-  a colon does the same work and the site has none.
+  It does two things at once, which is why it earns its place. It closes the arc
+  the page opened with (a privilege that belonged to other people), and it
+  removes the last obstacle without ever mentioning one: there is nothing to
+  request, nothing to join, nothing to wait for. It is already there. Go.
+
+  ── THE RESTRAINT IS THE ARGUMENT ────────────────────────────────────────────
+
+  Big type, a great deal of air, one warm light low on the horizon, and almost
+  nothing else. Apple, Linear and Nothing all end this way, and they end this way
+  because the last thing a confident brand does is raise its voice. The quiet IS
+  the pitch: this is what a page looks like when it has already made its case.
 */
 
 export function Invitation() {
@@ -44,72 +50,64 @@ export function Invitation() {
   return (
     <section
       id="invite"
-      className="lit-below relative isolate flex min-h-[82svh] items-center overflow-hidden py-24"
+      className="lit-below relative isolate flex min-h-[92svh] items-center overflow-hidden py-28"
     >
-      <div className="relative z-10 mx-auto w-full max-w-3xl px-6 text-center">
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center">
         <motion.p
           initial={reduce ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9 }}
-          className="mb-10 font-mono text-[11px] uppercase tracking-[0.24em] text-ink/30"
+          transition={{ duration: 1.2 }}
+          className="font-mono text-[11px] uppercase tracking-[0.28em] text-ink/30"
         >
           Your turn
         </motion.p>
 
+        {/* the line the whole page has been walking toward */}
         <motion.h2
-          initial={reduce ? false : { opacity: 0, y: 24 }}
+          initial={reduce ? false : { opacity: 0, y: 26 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1.1, ease: EASE }}
-          className="mx-auto max-w-[18ch] text-[clamp(2rem,5.2vw,4rem)] font-medium leading-[1.04] tracking-[-0.04em]"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1.3, ease: EASE, delay: 0.15 }}
+          className="mx-auto mt-16 max-w-[17ch] text-[clamp(2.3rem,6vw,4.8rem)] font-medium leading-[1.02] tracking-[-0.045em]"
         >
           Some people hire a gatekeeper.{" "}
           <span className="text-green">You just install one.</span>
         </motion.h2>
 
+        {/* one sentence. it closes the arc and removes the last obstacle without
+            ever naming one: there is nothing to request. it is already there. */}
         <motion.p
           initial={reduce ? false : { opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, ease: EASE, delay: 0.35 }}
-          className="mx-auto mt-10 max-w-[58ch] text-pretty text-[16.5px] leading-relaxed text-ink/45"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1.1, ease: EASE, delay: 0.55 }}
+          className="mx-auto mt-12 max-w-[34ch] text-[clamp(1.1rem,1.9vw,1.5rem)] leading-relaxed text-ink/45"
         >
-          A gatekeeper isn&rsquo;t about keeping people out. It&rsquo;s about
-          protecting what matters most: your attention. Equal quietly answers
-          every call, handles routine conversations, filters distractions, and
-          forwards only the ones that deserve your time. You stay available for
-          what matters, without being interrupted by everything else.
+          The privilege is already waiting on your phone.
         </motion.p>
 
-        {/* held breath: the argument lands, and only then does the door appear */}
+        {/* the held breath. the line lands, and only then does the door appear. */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.8 }}
-          className="mt-14"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 1.05 }}
+          className="mt-20"
         >
           <Magnetic>
             <a
               href={PLAY_STORE}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-ink group inline-flex items-center gap-2.5 rounded-full px-7 py-4 text-[15px] font-medium text-canvas"
+              className="btn-ink inline-flex items-center rounded-full px-9 py-[18px] text-[15.5px] font-medium text-canvas"
             >
               Get Equal on Google Play
-              <ArrowUpRight
-                weight="bold"
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
             </a>
           </Magnetic>
 
-          {/* the price, said once, plainly, at the door. never in the hero, and
-              never measured against a beverage. */}
-          <p className="tnum mt-8 text-[13px] text-ink/30">
-            Starts at {inr(249)} a month. Cancel anytime.
+          <p className="tnum mt-10 text-[13px] text-ink/30">
+            Starts at {inr(249)}/month.
           </p>
         </motion.div>
       </div>

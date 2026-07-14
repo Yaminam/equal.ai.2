@@ -4,6 +4,7 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { Magnetic } from "./Magnetic";
+import { PLAY_STORE } from "../lib/links";
 import { EASE } from "../lib/motion";
 
 /*
@@ -36,8 +37,13 @@ export function Nav() {
         </a>
 
         <Magnetic>
+          {/* it says "Get the app", so it gets the app. A button that scrolls
+              you somewhere else is a small lie, and this is the only button most
+              visitors will ever see. */}
           <a
-            href="#invite"
+            href={PLAY_STORE}
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-ink inline-flex min-h-[44px] items-center rounded-full px-5 text-[14px] font-medium text-canvas"
           >
             Get the app
