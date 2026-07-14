@@ -285,6 +285,44 @@
     box-shadow: 0 0 0 1px #00913433, inset 0 2px 5px #00602099;
   }
 
+  /*
+    The quiet button. Ink, and it stays ink.
+
+    `.btn-ink` turns green on hover, which is right for a button that has to
+    compete for attention in a nav bar. It is wrong for the last button on the
+    page: green is the brand accent, and the accent has already been spent on the
+    one word in the headline that matters. A second flash of it two inches below
+    dilutes the first.
+
+    So this one gets deeper, not louder. It lifts 3px, the shadow grows under it,
+    and the face darkens. Nothing else.
+  */
+  .btn-solid {
+    background: linear-gradient(#1c221a, var(--color-ink));
+    box-shadow:
+      0 0 0 1px #10140f,
+      0 1px 2px #10140f2e,
+      0 10px 24px -10px #10140f80,
+      inset 0 1px 0 #ffffff26;
+    transition:
+      box-shadow 0.35s var(--ease-out-expo),
+      transform 0.35s var(--ease-out-expo),
+      background 0.35s var(--ease-out-expo);
+  }
+  .btn-solid:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(#151a14, #070906);
+    box-shadow:
+      0 0 0 1px #10140f,
+      0 2px 4px #10140f38,
+      0 22px 44px -14px #10140f8c,
+      inset 0 1px 0 #ffffff33;
+  }
+  .btn-solid:active {
+    transform: translateY(0);
+    box-shadow: 0 0 0 1px #10140f, inset 0 2px 6px #00000099;
+  }
+
   .text-pretty { text-wrap: pretty; }
 }
 
