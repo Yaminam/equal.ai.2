@@ -210,18 +210,46 @@ export function Stage() {
           />
         </motion.div>
 
-        {/* the arrival bloom, thrown from where the phone stands */}
+        {/*
+          The arrival bloom, thrown from where the phone stands.
+
+          THIS LAYER USED TO CARRY `mix-blend-screen`, AND THAT IS WHAT WAS
+          FLICKERING IN THE RIGHT-HAND CORNER ON THE TURN INTO THE LIGHT.
+
+          A blend mode is the one thing that cannot be composited on its own.
+          Everything else here is a GPU layer the browser hands off and forgets:
+          opacity, transform, the phone. But `screen` has to READ the pixels
+          underneath it before it can write its own, so the browser has to give
+          up the fast path and repaint the blended region on the main thread,
+          every frame. And underneath this layer, at exactly the same moment,
+          the section's own `backgroundColor` is animating from ink to canvas.
+          So the thing it must read is the thing that keeps changing. Repaint
+          and composite fall out of step, and the corner where the gradient is
+          brightest -- 76% across, the right side, which is precisely where it
+          was reported -- strobes.
+
+          Normal blending needs to read nothing. It is a plain painted layer
+          with an animated opacity, which is the single cheapest thing a
+          compositor does. `willChange: opacity` puts it on its own layer up
+          front so it never re-rasterises mid-animation.
+
+          Nothing is lost visually. `screen` only brightens against a DARK
+          backdrop, and against the canvas it is very nearly a no-op -- so
+          across the half of the dawn where the page is already light, the mode
+          was buying nothing and paying for it in frames. The colours below are
+          the same light, at the alpha needed to land the same way straight.
+        */}
         {!reduce && (
           <motion.div
             aria-hidden
-            style={{ opacity: bloom }}
-            className="pointer-events-none absolute inset-0 z-20 mix-blend-screen"
+            style={{ opacity: bloom, willChange: "opacity" }}
+            className="pointer-events-none absolute inset-0 z-20"
           >
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(46% 52% at 76% 50%, rgba(186,255,41,0.5), rgba(0,177,64,0.18) 38%, transparent 72%)",
+                  "radial-gradient(46% 52% at 76% 50%, rgba(198,255,96,0.42), rgba(0,177,64,0.13) 38%, transparent 72%)",
               }}
             />
           </motion.div>

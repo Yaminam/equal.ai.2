@@ -130,7 +130,27 @@
   .grain::after {
     content: "";
     position: fixed;
-    inset: 0;
+
+    /*
+      OVERSIZED ON PURPOSE. THIS IS THE FIX FOR THE FLICKER IN THE RIGHT-HAND
+      CORNER, AND IT IS WORTH SPELLING OUT, BECAUSE `inset: 0` LOOKS CORRECT.
+
+      The drift below translates this layer by up to 2%. Translating an element
+      moves its whole painted box -- it does not shift the tiles WITHIN a box
+      that stays put. So at `translate(-2%, …)` the layer's right edge pulls 2%
+      in from the viewport's right edge, and that strip is painted by nobody.
+      Four steps a second, so the strip appears and vanishes at 1.25Hz.
+
+      And it is invisible until the page turns light, because `multiply` against
+      a near-black ground is a no-op: the grain only starts darkening anything
+      once there is something light to darken. Which is why this read as "the
+      right corner flickers when we go to the bright theme" and nowhere else.
+
+      The background repeats, so overhanging the viewport costs nothing and
+      seams nowhere. 6% swallows a 2% drift three times over.
+    */
+    inset: -6%;
+
     z-index: 60;
     pointer-events: none;
     opacity: 0.42;
