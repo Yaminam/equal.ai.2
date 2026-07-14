@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check, PhoneCall, PhoneDisconnect, Prohibit } from "@phosphor-icons/react";
 import { EASE } from "../lib/motion";
 
@@ -11,10 +11,51 @@ import { EASE } from "../lib/motion";
   A phone, built in DOM: crisp at any density, re-themeable, no assets. It is
   the protagonist of the whole page, so it never leaves the screen. Only what is
   on it changes.
+
+  ── THE SCREEN IS DESIGNED ONCE AND SCALED AS A WHOLE ────────────────────────
+
+  Every screen is authored at ONE width — 322px, the size they were all tuned at
+  — and the entire panel is then scaled to whatever the phone actually is.
+
+  This is not a stylistic choice, it is the only correct one. The phone is fluid:
+  394px wide on a desktop, 246px in the closing frame, 161px in the hero on a
+  390px handset. The screens were fixed pixels, so on a phone the 92px avatar
+  became more than half the display, "Unknown number" wrapped onto two lines, and
+  the Accept and Decline buttons were sliced clean off the bottom edge.
+
+  A real handset does not reflow its call screen at different physical sizes. It
+  renders the same layout, larger or smaller. So do we.
+
+  ── WHY IT IS MEASURED IN JS AND NOT IN CSS ──────────────────────────────────
+
+  The obvious version is `transform: scale(calc(100cqw / 322))`. It does not work,
+  and it fails SILENTLY: dividing a length by a number yields a LENGTH, and
+  `scale()` takes a unitless number. The declaration is simply dropped, the panel
+  renders at 1:1, and the layout quietly breaks. CSS calc cannot divide a length
+  by a length either.
+
+  So a ResizeObserver reads the display and hands the ratio to the transform.
+  Text stays crisp: a CSS transform rasterises at the composited scale.
 */
+
+/** the width every screen is authored at. one number governs the whole device. */
+const SCREEN_W = 322;
 
 /* ---------------------------------------------------------------- the shell */
 export function Device({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+  const screen = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = screen.current;
+    if (!el) return;
+    const read = () => setScale(el.clientWidth / SCREEN_W);
+    read();
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div className="relative mx-auto w-full">
       {/* one light. in the dark it is the only light there is. */}
@@ -91,17 +132,41 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
 
           The display is its own device. It never inherits the page's ink.
         */}
-        {/* `@container` so the status bar can size itself against THIS screen,
-            whatever width the phone happens to be. */}
         <div
-          className="@container relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas text-ink"
+          ref={screen}
+          className="relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas text-ink"
           style={{
             // the glass is recessed into the body, so the body casts a hairline
             // shadow onto the top of the display
             boxShadow: "inset 0 0 0 1px #00000047, inset 0 2px 5px -2px #0000002e",
           }}
         >
-          {children}
+          {/*
+            The panel: authored at 322px, rendered at whatever this phone is.
+
+            ZOOM, NOT TRANSFORM. This is the whole difference between crisp and
+            mush, and it is worth stating plainly:
+
+              `transform: scale()` scales PIXELS. The browser rasterises the text
+              once at its authored size and then resamples the bitmap — and this
+              phone already sits inside another animated transform in the hero, so
+              it is on a composited layer and gets resampled for certain. Every
+              glyph on the screen goes soft. 10.5px Devanagari turns to mush.
+
+              `zoom` scales LAYOUT. The text is laid out at the final size and
+              rendered at the device's real pixel density. It stays sharp.
+
+            Same geometry, and the only one of the two that is legible.
+          */}
+          <div
+            style={{
+              width: SCREEN_W,
+              height: (SCREEN_W * 19.2) / 9,
+              zoom: scale,
+            }}
+          >
+            {children}
+          </div>
         </div>
       </div>
 
@@ -145,12 +210,12 @@ function Bar({ live }: { live?: boolean }) {
       at every width the page renders — and NOTHING BELOW THE BAR MOVED. The call
       screens keep the layout they were tuned with.
     */
-    <div className="relative z-10 flex items-start justify-between px-[6cqw] pt-[3.4cqw] text-[3.6cqw]">
+    <div className="relative z-10 flex items-start justify-between px-6 pt-3.5 text-[11px]">
       <span className="tnum font-semibold tracking-tight text-ink/70">9:41</span>
 
-      <span className="flex items-center gap-[0.42em] text-ink/70">
+      <span className="flex items-center gap-[5px] text-ink/70">
         {/* signal: four rising bars */}
-        <svg viewBox="0 0 16 11" fill="none" aria-hidden className="h-[1.05em] w-[1.5em]">
+        <svg viewBox="0 0 16 11" fill="none" aria-hidden width="16" height="11">
           {[0, 1, 2, 3].map((i) => (
             <rect
               key={i}
@@ -166,7 +231,7 @@ function Bar({ live }: { live?: boolean }) {
         </svg>
 
         {/* wifi */}
-        <svg viewBox="0 0 14 11" fill="none" aria-hidden className="h-[1.05em] w-[1.32em]">
+        <svg viewBox="0 0 14 11" fill="none" aria-hidden width="14" height="11">
           <path d="M7 9.4 5.2 7.3a2.8 2.8 0 0 1 3.6 0L7 9.4Z" fill="currentColor" />
           <path
             d="M3.5 5.4a5.4 5.4 0 0 1 7 0M1.2 3.1a8.8 8.8 0 0 1 11.6 0"
@@ -177,7 +242,7 @@ function Bar({ live }: { live?: boolean }) {
         </svg>
 
         {/* battery. the nub on the right is what sells it. */}
-        <svg viewBox="0 0 24 11" fill="none" aria-hidden className="h-[1.05em] w-[2.28em]">
+        <svg viewBox="0 0 24 11" fill="none" aria-hidden width="24" height="11">
           <rect
             x="0.6"
             y="0.6"
