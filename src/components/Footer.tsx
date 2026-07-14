@@ -10,9 +10,19 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-end sm:justify-between">
         <div className="text-green">
           <Logo className="h-[19px] w-auto" />
-          {/* the DPDP line lives in Creed now, where it is a promise rather than fine print */}
+          {/*
+            The DPDP citation lives here, not in the trust section.
+
+            A statute is a fact about paperwork, and nobody ever trusted a
+            company because of paperwork — so the trust section closes on the
+            promise instead. But the Act should not vanish: almost no Indian
+            consumer app names it, and naming it reads as confidence. A footer is
+            exactly where a legal citation belongs, and Indian buyers scan one
+            for precisely this.
+          */}
           <p className="mt-5 max-w-[34ch] text-[12.5px] leading-relaxed text-ink/35">
             A consumer product by Equal Identity Private Limited, Hyderabad.
+            Personal data handled under the DPDP Act, 2023.
           </p>
         </div>
 
