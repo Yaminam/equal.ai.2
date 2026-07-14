@@ -46,10 +46,24 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
             : "0 0 0 1px #10140f, 0 2px 6px -2px #10140f2e, 0 24px 48px -20px #10140f52, 0 48px 90px -40px #10140f3d, inset 0 1px 0 #ffffff33, inset 0 -1px 0 #00000059",
         }}
       >
-        {/* the island. it sits ON the glass, so it gets the glass's own faint
-            highlight along its top edge rather than reading as a black sticker. */}
+        {/*
+          The island. It sits ON the glass, so it gets the glass's own faint
+          highlight along its top edge rather than reading as a black sticker.
+
+          ITS WIDTH IS A PERCENTAGE, NOT A PIXEL COUNT.
+
+          It was a hard-coded 88px. The phone is fluid — 394px wide on a desktop,
+          264px in the closing frame — so on the smaller ones the island grew,
+          relative to its screen, until it ran straight through the status bar and
+          the signal bars disappeared underneath it. Measured: a two-pixel gap.
+
+          A fixed size inside a fluid object is a collision waiting for the first
+          layout that shrinks the object. 26% clears the icons at every width the
+          page renders, and it is what a real island is: a proportion of the
+          screen, not a number of pixels.
+        */}
         <div
-          className="absolute left-1/2 top-[17px] z-20 h-[24px] w-[88px] -translate-x-1/2 rounded-full"
+          className="absolute left-1/2 top-[17px] z-20 h-[24px] w-[26%] max-w-[88px] -translate-x-1/2 rounded-full"
           style={{
             background: "#05070500",
             backgroundColor: "#050705",
@@ -58,7 +72,7 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
         >
           {/* the lens */}
           <span
-            className="absolute right-[9px] top-1/2 block size-[9px] -translate-y-1/2 rounded-full"
+            className="absolute right-[10%] top-1/2 block size-[9px] max-h-[38%] max-w-[15%] -translate-y-1/2 rounded-full"
             style={{
               background: "radial-gradient(circle at 35% 30%, #2c3a44, #0b0f12 70%)",
               boxShadow: "inset 0 0 0 0.5px #ffffff14",
@@ -77,8 +91,10 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
 
           The display is its own device. It never inherits the page's ink.
         */}
+        {/* `@container` so the status bar can size itself against THIS screen,
+            whatever width the phone happens to be. */}
         <div
-          className="relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas text-ink"
+          className="@container relative aspect-[9/19.2] overflow-hidden rounded-[2.35rem] bg-canvas text-ink"
           style={{
             // the glass is recessed into the body, so the body casts a hairline
             // shadow onto the top of the display
@@ -111,12 +127,30 @@ export function Device({ children, dark = false }: { children: ReactNode; dark?:
 */
 function Bar({ live }: { live?: boolean }) {
   return (
-    <div className="relative z-10 flex items-start justify-between px-6 pt-3">
-      <span className="tnum text-[11px] font-semibold tracking-tight text-ink/70">9:41</span>
+    /*
+      THE STATUS BAR SCALES WITH THE PHONE. NOTHING ELSE DOES.
 
-      <span className="flex items-center gap-[5px] text-ink/70">
+      Every glyph here was a fixed-pixel SVG: 16 + 14 + 24 with gaps, a 64px
+      cluster. The phone is fluid — 394px wide on a desktop and 139px inside a
+      360px handset — so that cluster went from a sixth of the screen to nearly
+      half of it, and on the small end it drove straight through the Dynamic
+      Island. Measured at minus forty-six pixels.
+
+      A fixed size inside a fluid object is a collision waiting for the first
+      layout that shrinks the object.
+
+      So the display is a container and the bar alone is sized in cqw: everything
+      on it is a percentage of the screen it sits on, exactly as it is on a real
+      handset. The clock, the icons and the island now hold the same relationship
+      at every width the page renders — and NOTHING BELOW THE BAR MOVED. The call
+      screens keep the layout they were tuned with.
+    */
+    <div className="relative z-10 flex items-start justify-between px-[6cqw] pt-[3.4cqw] text-[3.6cqw]">
+      <span className="tnum font-semibold tracking-tight text-ink/70">9:41</span>
+
+      <span className="flex items-center gap-[0.42em] text-ink/70">
         {/* signal: four rising bars */}
-        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" aria-hidden>
+        <svg viewBox="0 0 16 11" fill="none" aria-hidden className="h-[1.05em] w-[1.5em]">
           {[0, 1, 2, 3].map((i) => (
             <rect
               key={i}
@@ -132,11 +166,8 @@ function Bar({ live }: { live?: boolean }) {
         </svg>
 
         {/* wifi */}
-        <svg width="14" height="11" viewBox="0 0 14 11" fill="none" aria-hidden>
-          <path
-            d="M7 9.4 5.2 7.3a2.8 2.8 0 0 1 3.6 0L7 9.4Z"
-            fill="currentColor"
-          />
+        <svg viewBox="0 0 14 11" fill="none" aria-hidden className="h-[1.05em] w-[1.32em]">
+          <path d="M7 9.4 5.2 7.3a2.8 2.8 0 0 1 3.6 0L7 9.4Z" fill="currentColor" />
           <path
             d="M3.5 5.4a5.4 5.4 0 0 1 7 0M1.2 3.1a8.8 8.8 0 0 1 11.6 0"
             stroke="currentColor"
@@ -146,7 +177,7 @@ function Bar({ live }: { live?: boolean }) {
         </svg>
 
         {/* battery. the nub on the right is what sells it. */}
-        <svg width="24" height="11" viewBox="0 0 24 11" fill="none" aria-hidden>
+        <svg viewBox="0 0 24 11" fill="none" aria-hidden className="h-[1.05em] w-[2.28em]">
           <rect
             x="0.6"
             y="0.6"
@@ -165,11 +196,7 @@ function Bar({ live }: { live?: boolean }) {
             rx="1.4"
             fill={live ? "#00b140" : "currentColor"}
           />
-          <path
-            d="M22.4 3.9v3.2a1.7 1.7 0 0 0 0-3.2Z"
-            fill="currentColor"
-            fillOpacity="0.35"
-          />
+          <path d="M22.4 3.9v3.2a1.7 1.7 0 0 0 0-3.2Z" fill="currentColor" fillOpacity="0.35" />
         </svg>
       </span>
     </div>
