@@ -6,7 +6,7 @@ import { useSmoothScroll } from "./lib/useSmoothScroll";
 import { Stage } from "./components/Stage";
 import { Idea } from "./components/Idea";
 import { Category } from "./components/Category";
-import { Evening } from "./components/Evening";
+import { Privilege } from "./components/Privilege";
 import { Greeting } from "./components/Greeting";
 import { Voices } from "./components/Voices";
 import { Creed } from "./components/Creed";
@@ -56,8 +56,8 @@ export default function App() {
         {/* what it is, said by what it is not */}
         <Category />
 
-        {/* the aspiration: one evening, and the only call that got through */}
-        <Evening />
+        {/* the aspiration. one sentence, and the room to say it in. */}
+        <Privilege />
 
         {/* the assistant, in its own voice */}
         <Greeting />

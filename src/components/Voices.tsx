@@ -78,7 +78,7 @@ export function Voices() {
                 {v.quote}
               </blockquote>
               <figcaption className="mt-7 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink/30">
-                {v.name} — {v.role}
+                {v.name}, {v.role}
               </figcaption>
             </motion.figure>
           ))}

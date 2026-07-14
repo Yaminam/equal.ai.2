@@ -404,8 +404,8 @@ export function Idea() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
             className="max-w-[26ch] text-pretty text-[16.5px] leading-relaxed text-canvas/45 md:pb-2"
           >
-            Equal picks up, listens, decides, and moves on. Push the heap — it
-            has weight, because it did.
+            Equal picks up, listens, decides, and moves on. Push the heap. It has
+            weight, because it did.
           </motion.p>
         </div>
       </div>
