@@ -9,7 +9,7 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { useRef, useState, type ReactNode } from "react";
+import { Fragment, useRef, useState, type ReactNode } from "react";
 import { ArrowRight } from "@phosphor-icons/react";
 import {
   Device,
@@ -108,24 +108,36 @@ const DAWN = [0.24, 0.34];
 /** Premium is slow. Nobody good runs a beat in under one viewport. */
 const VH_PER_BEAT = 170;
 
+/*
+  A word-by-word hinge reveal — with REAL spaces between the words.
+
+  The gaps used to be `margin-right`, which looks like spacing and is not: the
+  DOM read "Notallcallsdeserveyourattention." Copy the headline and you got that
+  string; a screen reader read that string; a crawler indexed it. A margin is a
+  picture of a space. Only a space is a space.
+*/
 function Line({ text, accent }: { text: string; accent?: string }) {
   const reduce = useReducedMotion();
   const strip = (s: string) => s.replace(/[.,]/g, "");
+  const words = text.split(" ");
   return (
     <>
-      {text.split(" ").map((w, i) => {
+      {words.map((w, i) => {
         const on = accent && strip(w) === strip(accent);
         return (
-          <span key={`${w}-${i}`} className="mr-[0.2em] inline-block overflow-hidden pb-[0.09em] align-bottom">
-            <motion.span
-              initial={reduce ? false : { y: "112%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: EASE, delay: i * 0.05 }}
-              className={`inline-block ${on ? "text-green" : ""}`}
-            >
-              {w}
-            </motion.span>
-          </span>
+          <Fragment key={`${w}-${i}`}>
+            <span className="inline-block overflow-hidden pb-[0.09em] align-bottom">
+              <motion.span
+                initial={reduce ? false : { y: "112%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: EASE, delay: i * 0.05 }}
+                className={`inline-block ${on ? "text-green" : ""}`}
+              >
+                {w}
+              </motion.span>
+            </span>
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
         );
       })}
     </>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { EASE } from "../lib/motion";
 
@@ -97,18 +98,30 @@ export function Aspire() {
             viewport={{ once: true, amount: 0.35 }}
             className="max-w-[13ch] text-[clamp(2.4rem,6.4vw,5.8rem)] font-medium leading-[0.98]"
           >
+            {/*
+              THE SPACES ARE REAL, AND THEY HAVE TO BE.
+
+              Each word is clipped in its own inline-block so it can hinge up
+              from below. The gaps between them used to be `margin-right` — which
+              LOOKS like spacing and is not: the DOM read "Nowtheprivilegeisyours."
+              Copy the headline and you got that. A screen reader said that. A
+              crawler indexed that.
+
+              A margin is a picture of a space. A space is a space. So the words
+              are separated by real text nodes, and the margin is gone.
+            */}
             {WORDS.map((w, i) => (
-              <span
-                key={`${w}-${i}`}
-                className="mr-[0.22em] inline-block overflow-hidden pb-[0.1em] align-bottom"
-              >
-                <motion.span
-                  variants={WORD}
-                  className={`inline-block ${w.startsWith("privilege") ? "text-green" : ""}`}
-                >
-                  {w}
-                </motion.span>
-              </span>
+              <Fragment key={`${w}-${i}`}>
+                <span className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+                  <motion.span
+                    variants={WORD}
+                    className={`inline-block ${w.startsWith("privilege") ? "text-green" : ""}`}
+                  >
+                    {w}
+                  </motion.span>
+                </span>
+                {i < WORDS.length - 1 ? " " : null}
+              </Fragment>
             ))}
           </motion.h2>
 
